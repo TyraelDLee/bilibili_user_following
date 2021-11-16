@@ -1,0 +1,20 @@
+/*
+Remove that freaking LIGHT GREY background color for ScrollPane
+*/
+
+.show-pane-transparent {
+    -fx-background-color: transparent;
+}
+
+.show-pane-transparent > .viewport {
+    -fx-background-color: transparent;
+}
+
+.show-pane-dark {
+    -fx-background-color: black;
+}
+
+.show-pane-dark > .viewport {
+    -fx-background-color: #303030;
+}
+

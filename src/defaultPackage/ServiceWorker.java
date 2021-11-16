@@ -59,13 +59,12 @@ public class ServiceWorker {
         String dispay = "";
         int code = -1;
         try {
-            int pn = 0;
+            int pn = 1;
             reply = this.sentRequest(pn);
-
             code = new JSONObject(reply).getInt("code");
             if(code == 0){
                 int total = new JSONObject(reply).getJSONObject("data").getInt("total");
-                while ((!this.SESSDATA.equals("-1")) ? pn <= (int) (total / 50) + 1 : pn <= 5) {
+                while (!this.SESSDATA.equals("-1") ? pn <= (int) (total / 50) + 1 : pn <= 5) {
                     reply = this.sentRequest(pn);
                     JSONObject jo = new JSONObject(reply);
                     for (int i = 0; i < jo.getJSONObject("data").getJSONArray("list").length(); i++) {

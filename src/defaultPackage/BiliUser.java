@@ -71,6 +71,6 @@ public class BiliUser {
     }
 
     public String display(){
-        return "用户名："+this.uname+", uid:"+this.uid+", 关注日期："+this.followTime;
+        return "用户名："+this.uname+", uid:"+this.uid+", \t关注日期："+this.followTime;
     }
 }

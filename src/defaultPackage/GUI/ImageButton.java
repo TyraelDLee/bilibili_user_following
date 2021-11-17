@@ -116,6 +116,10 @@ public class ImageButton extends StackPane {
         this.image_background.setFitWidth(width);
     }
 
+    void convertHexColour(String Hex){
+
+    }
+
     /**
      * Style setting
      * Set the effect when mouse over the button

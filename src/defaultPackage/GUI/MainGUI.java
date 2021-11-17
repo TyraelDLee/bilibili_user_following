@@ -24,15 +24,13 @@ public class MainGUI extends Application implements Obs {
     private static final double WINDOW_HEIGHT = 500.0;
     private static final double WINDOW_WIDTH = 800.0;
     private static double ZOOMFACTOR = 1;
-    private static final String ints = "0123456789";
-    private static final String title = "b站用户成分查询";
+    private static final String title = "b站用户成分查询机";
 
     private ServiceWorker worker = new ServiceWorker();
     private Number mainStageHeight = WINDOW_HEIGHT, mainStageWidth = WINDOW_WIDTH;
     private TextField uid_In = new TextField();
     private TextField sess_In = new TextField();
-    private ImageButton startButton = new ImageButton(100, 80, "Start", .95, .82, .38, .8);
-    private ImageButton clearButton = new ImageButton(100, 80, "Cancel");
+    private ImageButton startButton = new ImageButton(100, 80, "查询", .95, .82, .38, .8);
     private ShowPane showPane = new ShowPane(WINDOW_WIDTH, WINDOW_HEIGHT - 150);
 
     private String currentType = "sniff";
@@ -89,8 +87,8 @@ public class MainGUI extends Application implements Obs {
                 firstTime.setValue(false);
             }
         });
-        showPane.setContext("(由于b站隐私设置，最多只能查询250个关注，如果要查询全部关注请输入SESSDATA，SESSDATA可在bilibili.com的Cookie中找到)");
-        root.getChildren().addAll(startButton, clearButton, showPane, uid_In, sess_In);
+        showPane.setContext("(由于b站隐私设置，最多只能查询250个关注，如果要查询全部关注请输入SESSDATA，\r\nSESSDATA可在bilibili.com的Cookie中找到。输入的SESSDATA需与被查询UID的一致才会生效)");
+        root.getChildren().addAll(startButton, showPane, uid_In, sess_In);
         primaryStage.setScene(mainStage);
         primaryStage.show();
     }
@@ -100,23 +98,19 @@ public class MainGUI extends Application implements Obs {
         uid_In.setMinSize(120, 25);
         uid_In.setMaxSize(300, 40);
         uid_In.setPrefSize(120 * ZOOMFACTOR, 25 * ZOOMFACTOR);
-        uid_In.setLayoutX((mainStageWidth.doubleValue() - uid_In.getPrefWidth()) / 2 - 300* (ZOOMFACTOR<1?1:ZOOMFACTOR));
+        uid_In.setLayoutX((mainStageWidth.doubleValue() - uid_In.getPrefWidth()) / 2 - 200* (ZOOMFACTOR<1?1:ZOOMFACTOR));
         uid_In.setLayoutY(45);
 
         sess_In.setMinSize(200, 25);
         sess_In.setMaxSize(600, 40);
         sess_In.setPrefSize(300 * ZOOMFACTOR, 25 * ZOOMFACTOR);
-        sess_In.setLayoutX((mainStageWidth.doubleValue() - uid_In.getPrefWidth()) / 2 - 160* (ZOOMFACTOR<1?1:ZOOMFACTOR));
+        sess_In.setLayoutX((mainStageWidth.doubleValue() - uid_In.getPrefWidth()) / 2 - 60* (ZOOMFACTOR<1?1:ZOOMFACTOR));
         sess_In.setLayoutY(45);
 
         //settingButton.setLocation(50, 20);
-        startButton.setLocation((mainStageWidth.doubleValue() + uid_In.getPrefWidth()) / 2 + 150 - 100, 45);
+        startButton.setLocation((mainStageWidth.doubleValue() + uid_In.getPrefWidth()) / 2 + 280 - 100, 45);
         if (25 * ZOOMFACTOR <= 20) startButton.setSize(100, 25);
         else startButton.setSize(100, (25 * ZOOMFACTOR)<40?25 * ZOOMFACTOR:40);
-
-        clearButton.setLocation((mainStageWidth.doubleValue() + uid_In.getPrefWidth()) / 2 + 280 - 100, 45);
-        if (25 * ZOOMFACTOR <= 20) clearButton.setSize(100, 25);
-        else clearButton.setSize(100, (25 * ZOOMFACTOR)<40?25 * ZOOMFACTOR:40);
 
         showPane.setSize(mainStageWidth.doubleValue() - 50, mainStageHeight.doubleValue() - 200);
         showPane.setLocation(25, 150);
@@ -132,13 +126,12 @@ public class MainGUI extends Application implements Obs {
         uid_In.setPromptText("输入要查询的uid");
         primaryStage.setTitle("查询中...");
         showPane.clear();
-        if(sess_In.getText().length()==0) worker.setSESSDATA(sess_In.getText());
+        if(sess_In.getText().length()>0) worker.setSESSDATA(sess_In.getText());
         worker.setUid(uid_In.getText());
         System.out.println(uid_In.getText());
         //set the sniffer attributes.
         showPane.setContext("这个人关注了:");
-        showPane.setContext(worker.sentRequest());
+        worker.dispatchWorker();
         primaryStage.setTitle("查询完成");
     }
-
 }
